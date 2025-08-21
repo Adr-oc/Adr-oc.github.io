@@ -17,5 +17,9 @@ export default defineConfig({
 	],
 	vite: {
 		plugins: [tailwindcss()],
+		assetsInclude: ['**/*.svg'],
+	},
+	build: {
+		assets: 'assets'
 	},
 });

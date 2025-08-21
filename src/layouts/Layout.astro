@@ -23,6 +23,10 @@ const { title, description } = Astro.props;
 		
 		<!-- Theme initialization script - runs before page render to avoid flash -->
 		<script is:inline>
+			// Icon paths
+			const DARK_ICON = '/dark_icon_adroc.svg';
+			const LIGHT_ICON = '/light_icon_adroc.svg';
+			
 			// Initialize theme from localStorage or system preference
 			(function() {
 				const storedTheme = localStorage.getItem('theme');
@@ -36,7 +40,7 @@ const { title, description } = Astro.props;
 				// Update favicon based on theme
 				const favicon = document.querySelector('link[rel="icon"]');
 				if (favicon && favicon instanceof HTMLLinkElement) {
-					favicon.href = isDark ? '/dark_icon_adroc.svg' : '/light_icon_adroc.svg';
+					favicon.href = isDark ? DARK_ICON : LIGHT_ICON;
 				}
 
 				// Dispatch theme event for components to update
