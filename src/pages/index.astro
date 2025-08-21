@@ -1,11 +1,283 @@
 ---
-import Welcome from '../components/Welcome.astro';
+import Nav from '../components/Nav.astro';
 import Layout from '../layouts/Layout.astro';
+import Section from '../components/Section.astro';
+import ProjectCard from '../components/ProjectCard.astro';
+import HeroVisual from '../components/HeroVisual.astro';
+import ContactForm from '../components/ContactForm.astro';
+import ContactInfo from '../components/ContactInfo.astro';
+import { Icon } from 'astro-icon/components';
+import '../styles/global.css';
 
-// Welcome to Astro! Wondering what to do next? Check out the Astro documentation at https://docs.astro.build
-// Don't want to use any of this? Delete everything in this file, the `assets`, `components`, and `layouts` directories, and start fresh.
+// Project data
+const projects = [
+	{
+		title: 'Todo List App',
+		description: 'A modern task management application with real-time updates, drag & drop functionality, and local storage persistence.',
+		icon: '📝',
+		imageIcon: '📋',
+		category: 'Web App',
+		technologies: ['Django', 'Python', 'JavaScript', 'PostgreSQL', 'HTML', 'Tailwind'],
+		links: {
+			primary: { text: 'Live Demo', href: '#' },
+			secondary: { text: 'View Code', href: '#' }
+		},
+		status: 'active',
+		staggerClass: 'stagger-2'
+	},
+	{
+		title: 'Odoo Drawing App',
+		description: 'Custom module for Odoo ERP system with advanced drawing capabilities, annotations, and PDF integration for business workflows.',
+		icon: '🎨',
+		imageIcon: '✏️',
+		category: 'Business App',
+		technologies: ['Python', 'Odoo', 'JavaScript', 'OWL'],
+		links: {
+			primary: { text: 'View Details', href: '#' },
+			secondary: { text: 'GitHub', href: '#' }
+		},
+		status: 'active',
+		staggerClass: 'stagger-3'
+	},
+	{
+		title: 'New Project',
+		description: 'Something amazing is in development. Stay tuned for updates on this exciting new project!',
+		icon: '🚧',
+		imageIcon: '❓',
+		category: 'Coming Soon',
+		technologies: ['???', '???', '???'],
+		links: {
+			primary: { text: 'Coming Soon', href: '#' }
+		},
+		status: 'coming-soon',
+		staggerClass: 'stagger-4'
+	}
+];
 ---
 
 <Layout>
-	<Welcome />
+		<main class="min-h-screen">
+		<!-- Hero Section -->
+		<section id="hero" class="min-h-screen flex items-center justify-center px-4 py-12 sm:px-6 lg:px-8 xl:px-12">
+			<div class="w-full max-w-6xl mx-auto">
+				<div class="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12 items-center">
+					<!-- Text Content -->
+					<div class="text-center lg:text-left space-y-6">
+						<div class="space-y-4">
+							<h1 class="scroll-animate text-4xl sm:text-5xl lg:text-6xl xl:text-7xl font-bold text-[var(--text-color)] transition-colors duration-300 ease-in-out leading-tight font-brand">
+								Hi, I'm <br class="sm:hidden" />
+								<span class="font-brand text-[var(--accent-color)] drop-shadow-[0_0_8px_var(--accent-color)]">Adr</span>ian <br class="sm:hidden" />
+								<span class="font-brand text-[var(--accent-color)] drop-shadow-[0_0_8px_var(--accent-color)]">O</span>rantes <br class="sm:hidden" />
+								<span class="font-brand text-[var(--accent-color)] drop-shadow-[0_0_8px_var(--accent-color)]">C</span>ameros
+							</h1>
+							<p class="scroll-animate stagger-1 text-base sm:text-lg lg:text-xl text-[var(--text-color)] opacity-80 transition-colors duration-300 ease-in-out max-w-2xl mx-auto lg:mx-0 leading-relaxed">
+								Full-Stack Web Developer specialized in Odoo (v15–18). Experienced in implementation, customization, and custom module development, leading projects that optimize and automate business processes.
+							</p>
+						</div>
+						
+						<!-- CTA Buttons -->
+						<div class="scroll-animate stagger-2 flex flex-col sm:flex-row gap-4 justify-center lg:justify-start pt-4">
+							<a href="#contact" class="cta-button inline-flex items-center justify-center px-6 py-3 bg-[var(--accent-color)] text-[var(--accent-text)] font-medium font-brand rounded-lg transition-all duration-300 ease-in-out hover:bg-[var(--accent-hover)] hover:transform hover:scale-105 hover:shadow-[0_4px_20px_var(--shadow-color)] text-sm sm:text-base">
+								Get In Touch
+							</a>
+							<a href="#projects" class="cta-button inline-flex items-center justify-center px-6 py-3 border-2 border-[var(--border-color)] text-[var(--text-color)] font-medium font-brand rounded-lg transition-all duration-300 ease-in-out hover:bg-[var(--overlay-color)] hover:transform hover:scale-105 text-sm sm:text-base">
+								View Projects
+							</a>
+						</div>
+					</div>
+					
+					<!-- Visual Element -->
+					<HeroVisual />
+				</div>
+			</div>
+		</section>
+		
+		<!-- Projects Section -->
+		<Section 
+			id="projects" 
+			title="My Projects"
+			subtitle="Here are some of the projects I've worked on, showcasing different technologies and approaches."
+			background="secondary"
+		>
+			<div class="grid grid-cols-1 lg:grid-cols-2 gap-4 lg:gap-6 max-w-6xl mx-auto">
+				{projects.map((project) => (
+					<ProjectCard {...project} />
+				))}
+			</div>
+		</Section>
+		
+		<!-- Skills Section -->
+		<section id="skills" class="py-16 sm:py-20 lg:py-24 px-4 sm:px-6 lg:px-8 xl:px-12 bg-[var(--bg-color)] transition-colors duration-300 ease-in-out h-screen">
+			<div class="max-w-8xl mx-auto w-full h-full flex flex-col items-center justify-center">
+				<div class="text-center mb-12 lg:mb-16">
+					<h2 class="scroll-animate text-3xl sm:text-4xl lg:text-5xl font-bold text-[var(--text-color)] transition-colors duration-300 ease-in-out mb-4">
+						Technical <span class="font-brand text-[var(--accent-color)]">Skills</span>
+					</h2>
+					<p class="scroll-animate stagger-1 text-base sm:text-lg lg:text-xl text-[var(--text-color)] opacity-80 transition-colors duration-300 ease-in-out max-w-2xl mx-auto">
+						Technologies and tools I use to bring ideas to life.
+					</p>
+				</div>
+				
+				<!-- Bento Grid Layout -->
+				<div class="scroll-animate stagger-1 flex-1 flex items-center justify-center">
+					<div class="w-full max-w-6xl grid grid-cols-12 grid-rows-8 gap-3 md:gap-4 lg:gap-6 h-full max-h-[600px]">
+						<!-- Python - Large Featured Box -->
+						<div class="col-span-6 md:col-span-4 row-span-4 group bg-gradient-to-br from-[var(--bg-color)] to-[var(--bg-color)] rounded-2xl border border-[var(--border-color)] p-6 md:p-8 transition-all duration-500 ease-in-out hover:shadow-[0_20px_60px_var(--shadow-color)] hover:transform hover:scale-[1.02] hover:border-[var(--accent-color)] relative overflow-hidden">
+							<div class="absolute inset-0 bg-gradient-to-br from-blue-500/5 to-yellow-500/5 opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+							<div class="relative z-10 h-full flex flex-col items-center justify-center text-center space-y-4">
+								<div class="w-16 h-16 md:w-20 md:h-20 lg:w-24 lg:h-24 flex items-center justify-center rounded-2xl group-hover:scale-110 transition-transform duration-500">
+									<Icon name="logos:python" class="w-full h-full" />
+								</div>
+								<span class="text-lg md:text-xl lg:text-2xl font-bold text-[var(--text-color)] group-hover:text-[var(--accent-color)] transition-colors duration-300">Python</span>
+								<span class="text-xs md:text-sm text-[var(--text-color)] opacity-70">Backend & AI</span>
+							</div>
+						</div>
+
+						<!-- JavaScript - Large Featured Box -->
+						<div class="col-span-6 md:col-span-4 row-span-4 group bg-gradient-to-br from-[var(--bg-color)] to-[var(--bg-color)] rounded-2xl border border-[var(--border-color)] p-6 md:p-8 transition-all duration-500 ease-in-out hover:shadow-[0_20px_60px_var(--shadow-color)] hover:transform hover:scale-[1.02] hover:border-[var(--accent-color)] relative overflow-hidden">
+							<div class="absolute inset-0 bg-gradient-to-br from-yellow-500/5 to-red-500/5 opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+							<div class="relative z-10 h-full flex flex-col items-center justify-center text-center space-y-4">
+								<div class="w-16 h-16 md:w-20 md:h-20 lg:w-24 lg:h-24 flex items-center justify-center rounded-2xl group-hover:scale-110 transition-transform duration-500">
+									<Icon name="logos:javascript" class="w-full h-full" />
+								</div>
+								<span class="text-lg md:text-xl lg:text-2xl font-bold text-[var(--text-color)] group-hover:text-[var(--accent-color)] transition-colors duration-300">JavaScript</span>
+								<span class="text-xs md:text-sm text-[var(--text-color)] opacity-70">Frontend & OWL</span>
+							</div>
+						</div>
+
+						<!-- HTML & CSS Combined Box -->
+						<div class="col-span-12 md:col-span-4 row-span-4 group bg-gradient-to-br from-[var(--bg-color)] to-[var(--bg-color)] rounded-2xl border border-[var(--border-color)] p-4 md:p-6 transition-all duration-500 ease-in-out hover:shadow-[0_20px_60px_var(--shadow-color)] hover:transform hover:scale-[1.02] hover:border-[var(--accent-color)] relative overflow-hidden">
+							<div class="absolute inset-0 bg-gradient-to-br from-orange-500/5 to-blue-500/5 opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+							<div class="relative z-10 h-full flex flex-col items-center justify-center text-center space-y-3">
+								<div class="flex items-center space-x-4">
+									<div class="w-12 h-12 md:w-16 md:h-16 flex items-center justify-center rounded-xl group-hover:scale-110 transition-transform duration-500">
+										<Icon name="logos:html-5" class="w-full h-full" />
+									</div>
+									<div class="w-12 h-12 md:w-16 md:h-16 flex items-center justify-center rounded-xl group-hover:scale-110 transition-transform duration-500">
+										<Icon name="logos:css-3" class="w-full h-full" />
+									</div>
+								</div>
+								<span class="text-base md:text-lg lg:text-xl font-bold text-[var(--text-color)] group-hover:text-[var(--accent-color)] transition-colors duration-300">HTML & CSS</span>
+								<span class="text-xs md:text-sm text-[var(--text-color)] opacity-70">Web Foundations</span>
+							</div>
+						</div>
+
+						<!-- Tailwind - Wide Box -->
+						<div class="col-span-6 md:col-span-3 row-span-2 group bg-gradient-to-br from-[var(--bg-color)] to-[var(--bg-color)] rounded-xl border border-[var(--border-color)] p-4 transition-all duration-500 ease-in-out hover:shadow-[0_12px_40px_var(--shadow-color)] hover:transform hover:scale-[1.02] hover:border-[var(--accent-color)] relative overflow-hidden">
+							<div class="absolute inset-0 bg-gradient-to-br from-cyan-500/5 to-blue-500/5 opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+							<div class="relative z-10 h-full flex flex-col items-center justify-center text-center space-y-2">
+								<div class="w-10 h-10 md:w-12 md:h-12 flex items-center justify-center rounded-lg group-hover:scale-110 transition-transform duration-500">
+									<Icon name="logos:tailwindcss-icon" class="w-full h-full" />
+								</div>
+								<span class="text-sm md:text-base font-semibold text-[var(--text-color)] group-hover:text-[var(--accent-color)] transition-colors duration-300">Tailwind</span>
+							</div>
+						</div>
+
+						<!-- Odoo - Wide Box -->
+						<div class="col-span-6 md:col-span-3 row-span-2 group bg-gradient-to-br from-[var(--bg-color)] to-[var(--bg-color)] rounded-xl border border-[var(--border-color)] p-4 transition-all duration-500 ease-in-out hover:shadow-[0_12px_40px_var(--shadow-color)] hover:transform hover:scale-[1.02] hover:border-[var(--accent-color)] relative overflow-hidden">
+							<div class="absolute inset-0 bg-gradient-to-br from-purple-500/5 to-pink-500/5 opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+							<div class="relative z-10 h-full flex flex-col items-center justify-center text-center space-y-2">
+								<div class="w-10 h-10 md:w-12 md:h-12 flex items-center justify-center rounded-lg group-hover:scale-110 transition-transform duration-500">
+									<Icon name="simple-icons:odoo" class="w-full h-full text-[#714b67]" />
+								</div>
+								<span class="text-sm md:text-base font-semibold text-[var(--text-color)] group-hover:text-[var(--accent-color)] transition-colors duration-300">Odoo</span>
+							</div>
+						</div>
+
+						<!-- Next.js - Medium Box -->
+						<div class="col-span-4 md:col-span-3 row-span-2 group bg-gradient-to-br from-[var(--bg-color)] to-[var(--bg-color)] rounded-xl border border-[var(--border-color)] p-4 transition-all duration-500 ease-in-out hover:shadow-[0_12px_40px_var(--shadow-color)] hover:transform hover:scale-[1.02] hover:border-[var(--accent-color)] relative overflow-hidden">
+							<div class="absolute inset-0 bg-gradient-to-br from-gray-500/5 to-blue-500/5 opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+							<div class="relative z-10 h-full flex flex-col items-center justify-center text-center space-y-2">
+								<div class="w-10 h-10 md:w-12 md:h-12 flex items-center justify-center rounded-lg group-hover:scale-110 transition-transform duration-500">
+									<Icon name="logos:nextjs-icon" class="w-full h-full" />
+								</div>
+								<span class="text-sm md:text-base font-semibold text-[var(--text-color)] group-hover:text-[var(--accent-color)] transition-colors duration-300">Next.js</span>
+							</div>
+						</div>
+
+						<!-- Astro - Medium Box -->
+						<div class="col-span-4 md:col-span-3 row-span-2 group bg-gradient-to-br from-[var(--bg-color)] to-[var(--bg-color)] rounded-xl border border-[var(--border-color)] p-4 transition-all duration-500 ease-in-out hover:shadow-[0_12px_40px_var(--shadow-color)] hover:transform hover:scale-[1.02] hover:border-[var(--accent-color)] relative overflow-hidden">
+							<div class="absolute inset-0 bg-gradient-to-br from-orange-500/5 to-purple-500/5 opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+							<div class="relative z-10 h-full flex flex-col items-center justify-center text-center space-y-2">
+								<div class="w-10 h-10 md:w-12 md:h-12 flex items-center justify-center rounded-lg group-hover:scale-110 transition-transform duration-500">
+									<Icon name="logos:astro-icon" class="w-full h-full" />
+								</div>
+								<span class="text-sm md:text-base font-semibold text-[var(--text-color)] group-hover:text-[var(--accent-color)] transition-colors duration-300">Astro</span>
+							</div>
+						</div>
+
+						<!-- Django - Medium Box -->
+						<div class="col-span-4 md:col-span-3 row-span-2 group bg-gradient-to-br from-[var(--bg-color)] to-[var(--bg-color)] rounded-xl border border-[var(--border-color)] p-4 transition-all duration-500 ease-in-out hover:shadow-[0_12px_40px_var(--shadow-color)] hover:transform hover:scale-[1.02] hover:border-[var(--accent-color)] relative overflow-hidden">
+							<div class="absolute inset-0 bg-gradient-to-br from-green-500/5 to-gray-500/5 opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+							<div class="relative z-10 h-full flex flex-col items-center justify-center text-center space-y-2">
+								<div class="w-10 h-10 md:w-12 md:h-12 flex items-center justify-center rounded-lg group-hover:scale-110 transition-transform duration-500">
+									<Icon name="logos:django-icon" class="w-full h-full" />
+								</div>
+								<span class="text-sm md:text-base font-semibold text-[var(--text-color)] group-hover:text-[var(--accent-color)] transition-colors duration-300">Django</span>
+							</div>
+						</div>
+
+						<!-- PostgreSQL - Small Box -->
+						<div class="col-span-3 row-span-2 group bg-gradient-to-br from-[var(--bg-color)] to-[var(--bg-color)] rounded-xl border border-[var(--border-color)] p-3 transition-all duration-500 ease-in-out hover:shadow-[0_12px_40px_var(--shadow-color)] hover:transform hover:scale-[1.02] hover:border-[var(--accent-color)] relative overflow-hidden">
+							<div class="absolute inset-0 bg-gradient-to-br from-blue-500/5 to-gray-500/5 opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+							<div class="relative z-10 h-full flex flex-col items-center justify-center text-center space-y-1">
+								<div class="w-8 h-8 md:w-10 md:h-10 flex items-center justify-center rounded-lg group-hover:scale-110 transition-transform duration-500">
+									<Icon name="logos:postgresql" class="w-full h-full" />
+								</div>
+								<span class="text-xs md:text-sm font-medium text-[var(--text-color)] group-hover:text-[var(--accent-color)] transition-colors duration-300">PostgreSQL</span>
+							</div>
+						</div>
+
+						<!-- XML - Small Box -->
+						<div class="col-span-3 row-span-2 group bg-gradient-to-br from-[var(--bg-color)] to-[var(--bg-color)] rounded-xl border border-[var(--border-color)] p-3 transition-all duration-500 ease-in-out hover:shadow-[0_12px_40px_var(--shadow-color)] hover:transform hover:scale-[1.02] hover:border-[var(--accent-color)] relative overflow-hidden">
+							<div class="absolute inset-0 bg-gradient-to-br from-orange-500/5 to-red-500/5 opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+							<div class="relative z-10 h-full flex flex-col items-center justify-center text-center space-y-1">
+								<div class="w-8 h-8 md:w-10 md:h-10 flex items-center justify-center rounded-lg group-hover:scale-110 transition-transform duration-500">
+									<Icon name="simple-icons:xml" class="w-full h-full text-[#ff6600]" />
+								</div>
+								<span class="text-xs md:text-sm font-medium text-[var(--text-color)] group-hover:text-[var(--accent-color)] transition-colors duration-300">XML</span>
+							</div>
+						</div>
+
+						<!-- OWL - Small Box -->
+						<div class="col-span-3 row-span-2 group bg-gradient-to-br from-[var(--bg-color)] to-[var(--bg-color)] rounded-xl border border-[var(--border-color)] p-3 transition-all duration-500 ease-in-out hover:shadow-[0_12px_40px_var(--shadow-color)] hover:transform hover:scale-[1.02] hover:border-[var(--accent-color)] relative overflow-hidden">
+							<div class="absolute inset-0 bg-gradient-to-br from-purple-500/5 to-blue-500/5 opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+							<div class="relative z-10 h-full flex flex-col items-center justify-center text-center space-y-1">
+								<div class="w-8 h-8 md:w-10 md:h-10 flex items-center justify-center rounded-lg group-hover:scale-110 transition-transform duration-500">
+									<Icon name="simple-icons:javascript" class="w-full h-full text-[#7c3aed]" />
+								</div>
+								<span class="text-xs md:text-sm font-medium text-[var(--text-color)] group-hover:text-[var(--accent-color)] transition-colors duration-300">OWL</span>
+							</div>
+						</div>
+
+						<!-- Inkscape - Small Box -->
+						<div class="col-span-3 row-span-2 group bg-gradient-to-br from-[var(--bg-color)] to-[var(--bg-color)] rounded-xl border border-[var(--border-color)] p-3 transition-all duration-500 ease-in-out hover:shadow-[0_12px_40px_var(--shadow-color)] hover:transform hover:scale-[1.02] hover:border-[var(--accent-color)] relative overflow-hidden">
+							<div class="absolute inset-0 bg-gradient-to-br from-gray-500/5 to-purple-500/5 opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+							<div class="relative z-10 h-full flex flex-col items-center justify-center text-center space-y-1">
+								<div class="w-8 h-8 md:w-10 md:h-10 flex items-center justify-center rounded-lg group-hover:scale-110 transition-transform duration-500">
+									<Icon name="simple-icons:inkscape" class="w-full h-full" />
+								</div>
+								<span class="text-xs md:text-sm font-medium text-[var(--text-color)] group-hover:text-[var(--accent-color)] transition-colors duration-300">Inkscape</span>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</section>
+		
+		<!-- Contact Section -->
+		<Section 
+			id="contact" 
+			title="Let's Connect"
+			subtitle="Ready to start a project together? I'd love to hear from you and discuss how we can work together."
+			background="secondary"
+		>
+			<div class="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12">
+				<ContactInfo />
+				<ContactForm />
+			</div>
+		</Section>
+	</main>
 </Layout>
+
+

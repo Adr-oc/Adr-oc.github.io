@@ -1,0 +1,399 @@
+---
+import Icon from './Icon.astro';
+import type { iconPaths } from './IconPaths';
+import ThemeToggle from './ThemeToggle.astro';
+
+/** Main menu items */
+const textLinks: { label: string; href: string }[] = [
+	{ label: 'Home', href: '#hero' },
+	{ label: 'Projects', href: '#projects' },
+	{ label: 'Skills', href: '#skills' },
+	{ label: 'Contact', href: '#contact' },
+];
+
+/** Icon links to social media — edit these with links to your profiles! */
+const iconLinks: { label: string; href: string; icon: keyof typeof iconPaths }[] = [
+	{ label: 'GitHub', href: 'https://github.com/Adr-oc', icon: 'github-logo' },
+	{ label: 'LinkedIn', href: 'https://www.linkedin.com/in/adrian-orantes-ab053027b/', icon: 'linkedin-logo' },	
+
+];
+
+/** Test if a link is pointing to the current page. */
+const isCurrentPage = (href: string) => {
+	let pathname = Astro.url.pathname.replace(import.meta.env.BASE_URL, '');
+	if (pathname.at(0) !== '/') pathname = '/' + pathname;
+	if (pathname.at(-1) !== '/') pathname += '/';
+	return pathname === href || (href !== '/' && pathname.startsWith(href));
+};
+---
+
+<nav class="relative z-50 w-full bg-[var(--bg-color)] border-b border-[var(--border-color)] transition-colors duration-300 ease-in-out sticky top-0 z-50">
+	<!-- Header para móvil y tablet -->
+	<div class="flex items-center justify-between px-4 py-3 md:px-6 lg:hidden">
+		<a href="#hero" class="flex items-center gap-3 text-[var(--text-color)] no-underline transition-colors duration-300 ease-in-out hover:text-[var(--accent-color)]">
+			<img alt="Adroc Logo" class="logo-img transition-opacity duration-300 ease-in-out" width="70" height="70" />
+			<span class="text-4xl font-bold font-brand tracking-tight">adr<span class="text-[var(--accent-color)]">oc</span></span>
+		</a>
+		<div class="flex items-center gap-3">
+			<ThemeToggle />
+			<menu-button>
+				<template>
+					<button class="hamburger-btn flex items-center justify-center w-10 h-10 md:w-11 md:h-11 rounded-lg border border-[var(--border-color)] bg-[var(--overlay-color)] text-[var(--text-color)] transition-all duration-300 ease-in-out hover:bg-[var(--border-color)] focus:outline-none focus:ring-2 focus:ring-[var(--accent-color)]" aria-expanded="false">
+						<span class="sr-only">Toggle menu</span>
+						<div class="hamburger-icon w-5 h-5 flex flex-col justify-center items-center">
+							<span class="hamburger-line"></span>
+							<span class="hamburger-line"></span>
+							<span class="hamburger-line"></span>
+						</div>
+					</button>
+				</template>
+			</menu-button>
+		</div>
+	</div>
+
+	<!-- Header para desktop -->
+	<div class="hidden lg:flex lg:items-center lg:justify-between lg:px-8 lg:py-4 xl:px-12">
+		<a href="#hero" class="flex items-center gap-3 text-[var(--text-color)] no-underline transition-colors duration-300 ease-in-out hover:text-[var(--accent-color)] hover:drop-shadow-[0_0_8px_var(--accent-color)] group ">
+			<span class="inline-block w-[60px] h-[60px]">
+				<img alt="Adroc Logo" class="logo-img w-full h-full object-contain transition-opacity duration-300 ease-in-out group-hover:brightness-110 group-hover:drop-shadow-[0_0_8px_var(--accent-color)]" width="60" height="60" />
+			</span>
+			<span class="text-3xl font-bold font-brand tracking-tight">
+				<span class="relative">
+					adr<span class="text-[var(--accent-color)]">oc</span>
+					<span class="absolute bottom-0 right-0 h-0.5 w-2/5 bg-[var(--accent-color)] transition-all duration-300 ease-in-out group-hover:w-full"/>
+				</span>
+			</span>
+		</a>
+		
+		<ul class="flex items-center gap-1 bg-[var(--overlay-color)] rounded-full p-1 border border-[var(--border-color)] shadow-sm">
+			{
+				textLinks.map(({ label, href }) => (
+					<li>
+						<a 
+							data-nav-link={href}
+							class="nav-link flex items-center px-4 py-2 text-sm font-medium text-[var(--text-color)] no-underline rounded-full transition-all duration-300 ease-in-out hover:text-[var(--accent-color)] hover:bg-[var(--overlay-color)]" 
+							href={href}
+						>
+							{label}
+						</a>
+					</li>
+				))
+			}
+		</ul>
+
+		<div class="flex items-center gap-3">
+			<div class="hidden xl:flex items-center gap-2">
+				{
+					iconLinks.slice(0, 3).map(({ href, icon, label }) => (
+						<a href={href} target="_blank" rel="noopener noreferrer" class="flex items-center justify-center w-14 h-14 rounded-xl text-[var(--text-color)] transition-all duration-300 ease-in-out hover:text-[var(--accent-color)] hover:bg-[var(--overlay-color)] hover:drop-shadow-[0_0_12px_var(--accent-color)]">
+							<span class="sr-only">{label}</span>
+							<Icon icon={icon} size="1.5rem" />
+						</a>
+					))
+				}
+			</div>
+			<ThemeToggle />
+		</div>
+	</div>
+	<!-- Menú móvil -->
+	<div id="menu-content" hidden class="lg:hidden absolute top-full left-0 right-0 bg-[var(--bg-color)] border-b border-[var(--border-color)] shadow-lg overflow-hidden">
+		<div class="menu-content-inner px-4 py-6 space-y-4 md:px-6">
+			<!-- Links de navegación -->
+			<div class="space-y-2">
+				{
+					textLinks.map(({ label, href }) => (
+						<a 
+							aria-current={isCurrentPage(href) ? 'page' : null} 
+							class="flex items-center px-4 py-3 text-base font-medium text-[var(--text-color)] no-underline rounded-lg transition-all duration-300 ease-in-out hover:text-[var(--accent-color)] hover:bg-[var(--overlay-color)] aria-[current=page]:text-[var(--accent-text)] aria-[current=page]:bg-[var(--accent-color)]" 
+							href={href}
+						>
+							{label}
+						</a>
+					))
+				}
+			</div>
+			
+			<!-- Separador -->
+			<div class="border-t border-[var(--border-color)] my-4"></div>
+			
+			<!-- Links sociales -->
+			<div class="grid grid-cols-3 gap-4 md:grid-cols-6">
+				{
+					iconLinks.map(({ href, icon, label }) => (
+						<a href={href} target="_blank" rel="noopener noreferrer" class="flex items-center justify-center p-4 rounded-xl bg-[var(--overlay-color)] text-[var(--text-color)] transition-all duration-300 ease-in-out hover:text-[var(--accent-color)] hover:bg-[var(--border-color)] hover:scale-105 hover:drop-shadow-[0_0_8px_var(--accent-color)]">
+							<span class="sr-only">{label}</span>
+							<Icon icon={icon} size="2.5rem" />
+						</a>
+					))
+				}
+			</div>
+		</div>
+	</div>
+
+	<!-- Fallback para no-JS -->
+	<noscript>
+		<div class="lg:hidden bg-[var(--bg-color)] border-b border-[var(--border-color)]">
+			<div class="px-4 py-6 space-y-4 md:px-6">
+				<div class="space-y-2">
+					{
+						textLinks.map(({ label, href }) => (
+							<a 
+								aria-current={isCurrentPage(href) ? 'page' : null} 
+								class="flex items-center px-4 py-3 text-base font-medium text-[var(--text-color)] no-underline rounded-lg transition-all duration-300 ease-in-out hover:text-[var(--accent-color)] hover:bg-[var(--overlay-color)] aria-[current=page]:text-[var(--accent-text)] aria-[current=page]:bg-[var(--accent-color)]" 
+								href={href}
+							>
+								{label}
+							</a>
+						))
+					}
+				</div>
+			</div>
+		</div>
+	</noscript>
+</nav>
+
+<script>
+	class MenuButton extends HTMLElement {
+		constructor() {
+			super();
+
+			// Inject menu toggle button when JS runs.
+			this.appendChild(this.querySelector('template')!.content.cloneNode(true));
+			const btn = this.querySelector('button')!;
+
+			// Hide menu (shown by default to support no-JS browsers).
+			const menu = document.getElementById('menu-content')!;
+			menu.hidden = true;
+			// Add "menu-content" class in JS to avoid covering content in non-JS browsers.
+			menu.classList.add('menu-content');
+
+			/** Set whether the menu is currently expanded or collapsed. */
+			const setExpanded = (expand: boolean) => {
+				btn.setAttribute('aria-expanded', expand ? 'true' : 'false');
+				
+				if (expand) {
+					// Show menu and trigger animation
+					menu.hidden = false;
+					// Force reflow to ensure the hidden attribute change takes effect
+					menu.offsetHeight;
+				} else {
+					// Hide menu after animation completes
+					setTimeout(() => {
+						if (btn.getAttribute('aria-expanded') === 'false') {
+							menu.hidden = true;
+						}
+					}, 300); // Match the CSS transition duration
+				}
+			};
+
+			// Toggle menu visibility when the menu button is clicked.
+			btn.addEventListener('click', (e) => {
+				e.stopPropagation();
+				setExpanded(menu.hidden);
+			});
+
+			// Close menu when clicking outside
+			document.addEventListener('click', (e) => {
+				if (!menu.hidden && !menu.contains(e.target as Node) && !btn.contains(e.target as Node)) {
+					setExpanded(false);
+				}
+			});
+
+			// Close menu when pressing Escape key
+			document.addEventListener('keydown', (e) => {
+				if (e.key === 'Escape' && !menu.hidden) {
+					setExpanded(false);
+					btn.focus(); // Return focus to the button
+				}
+			});
+
+			// Close menu when clicking on a menu link
+			menu.addEventListener('click', (e) => {
+				if ((e.target as HTMLElement).tagName === 'A') {
+					setExpanded(false);
+				}
+			});
+
+			// Hide menu button for large screens.
+			const handleViewports = (e: MediaQueryList | MediaQueryListEvent) => {
+				setExpanded(e.matches);
+				btn.hidden = e.matches;
+			};
+			const mediaQueries = window.matchMedia('(min-width: 1080px)');
+			handleViewports(mediaQueries);
+			mediaQueries.addEventListener('change', handleViewports);
+		}
+	}
+	customElements.define('menu-button', MenuButton);
+
+	// Update logo based on theme
+	function updateLogo() {
+		const isDark = document.documentElement.classList.contains('theme-dark');
+		const logoImages = document.querySelectorAll('.logo-img') as NodeListOf<HTMLImageElement>;
+		logoImages.forEach(logoImg => {
+			if (logoImg) {
+				logoImg.src = isDark ? '/dark_icon_adroc.svg' : '/light_icon_adroc.svg';
+			}
+		});
+	}
+
+	// Initialize logo on page load
+	updateLogo();
+
+	// Listen for theme changes
+	window.addEventListener('themeChanged', () => {
+		updateLogo();
+	});
+
+	// Also listen for MutationObserver as fallback (for initial load)
+	const observer = new MutationObserver((mutations) => {
+		mutations.forEach((mutation) => {
+			if (mutation.type === 'attributes' && mutation.attributeName === 'class') {
+				updateLogo();
+			}
+		});
+	});
+
+	observer.observe(document.documentElement, {
+		attributes: true,
+		attributeFilter: ['class']
+	});
+</script>
+
+<style>
+	/* Estilos específicos que no se pueden replicar completamente con Tailwind */
+	.menu-button[aria-expanded='true'] {
+		color: var(--accent-text) !important;
+		background-color: var(--accent-color) !important;
+		box-shadow: 0 4px 8px var(--shadow-color);
+	}
+
+	.menu-button[hidden] {
+		display: none;
+	}
+
+	/* Animated Hamburger Menu */
+	.hamburger-line {
+		display: block;
+		width: 18px;
+		height: 2px;
+		background-color: currentColor;
+		border-radius: 1px;
+		transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+		transform-origin: center;
+	}
+
+	.hamburger-line:nth-child(1) {
+		margin-bottom: 3px;
+	}
+
+	.hamburger-line:nth-child(2) {
+		margin-bottom: 3px;
+	}
+
+	/* Animation when expanded */
+	.hamburger-btn[aria-expanded='true'] .hamburger-line:nth-child(1) {
+		transform: translateY(5px) rotate(45deg);
+	}
+
+	.hamburger-btn[aria-expanded='true'] .hamburger-line:nth-child(2) {
+		opacity: 0;
+		transform: scaleX(0);
+	}
+
+	.hamburger-btn[aria-expanded='true'] .hamburger-line:nth-child(3) {
+		transform: translateY(-5px) rotate(-45deg);
+	}
+
+	/* Animaciones para el menú móvil */
+	#menu-content {
+		max-height: 0;
+		opacity: 0;
+		transform: translateY(-20px) scale(0.95);
+		transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+		pointer-events: none;
+		transform-origin: top center;
+	}
+
+	#menu-content:not([hidden]) {
+		max-height: 500px; /* Ajusta según el contenido */
+		opacity: 1;
+		transform: translateY(0) scale(1);
+		pointer-events: auto;
+	}
+
+	/* Animación de contenido interno */
+	.menu-content-inner {
+		transform: translateY(-10px);
+		opacity: 0;
+		transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1) 0.1s;
+	}
+
+	#menu-content:not([hidden]) .menu-content-inner {
+		transform: translateY(0);
+		opacity: 1;
+	}
+
+	/* Animación de elementos individuales */
+	#menu-content a {
+		opacity: 0;
+		transform: translateX(-20px);
+		transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+	}
+
+	#menu-content:not([hidden]) a {
+		opacity: 1;
+		transform: translateX(0);
+	}
+
+	/* Retraso escalonado para los elementos */
+	#menu-content a:nth-child(1) { transition-delay: 0.1s; }
+	#menu-content a:nth-child(2) { transition-delay: 0.15s; }
+	#menu-content a:nth-child(3) { transition-delay: 0.2s; }
+	#menu-content a:nth-child(4) { transition-delay: 0.25s; }
+
+	/* Animación del backdrop blur */
+	#menu-content::before {
+		content: '';
+		position: fixed;
+		top: 0;
+		left: 0;
+		right: 0;
+		bottom: 0;
+		background: rgba(0, 0, 0, 0.1);
+		backdrop-filter: blur(2px);
+		opacity: 0;
+		transition: opacity 0.3s ease-in-out;
+		z-index: -1;
+		pointer-events: none;
+	}
+
+	#menu-content:not([hidden])::before {
+		opacity: 1;
+	}
+
+	@media (forced-colors: active) {
+		.link[aria-current='page'] {
+			color: SelectedItem;
+		}
+	}
+
+
+
+	/* Mejora la performance de animaciones */
+	#menu-content,
+	.menu-content-inner,
+	#menu-content a {
+		will-change: transform, opacity;
+	}
+
+	/* Respeta las preferencias de movimiento reducido */
+	@media (prefers-reduced-motion: reduce) {
+		#menu-content,
+		.menu-content-inner,
+		#menu-content a,
+		#menu-content::before {
+			transition-duration: 0.01ms !important;
+		}
+	}
+</style>

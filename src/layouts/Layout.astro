@@ -1,22 +1,186 @@
+---
+import Nav from '../components/Nav.astro';
+
+interface Props {
+	title?: string | undefined;
+	description?: string | undefined;
+}
+
+const { title, description } = Astro.props;
+---
+
+
 <!doctype html>
 <html lang="en">
 	<head>
 		<meta charset="UTF-8" />
 		<meta name="viewport" content="width=device-width" />
-		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+		<link rel="icon" type="image/svg+xml" href="/dark_icon_adroc.svg" />
 		<meta name="generator" content={Astro.generator} />
-		<title>Astro Basics</title>
+		<title>Adroc Portfolio</title>
+		
+
+		
+		<!-- Theme initialization script - runs before page render to avoid flash -->
+		<script is:inline>
+			// Initialize theme from localStorage or system preference
+			(function() {
+				const storedTheme = localStorage.getItem('theme');
+				const systemPrefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+				const isDark = storedTheme === 'dark' || (!storedTheme && systemPrefersDark);
+				
+				if (isDark) {
+					document.documentElement.classList.add('theme-dark');
+				}
+				
+				// Update favicon based on theme
+				const favicon = document.querySelector('link[rel="icon"]');
+				if (favicon && favicon instanceof HTMLLinkElement) {
+					favicon.href = isDark ? '/dark_icon_adroc.svg' : '/light_icon_adroc.svg';
+				}
+
+				// Dispatch theme event for components to update
+				document.addEventListener('DOMContentLoaded', () => {
+					window.dispatchEvent(new CustomEvent('themeChanged', { detail: { isDark } }));
+				});
+			})();
+		</script>
 	</head>
-	<body>
-		<slot />
+	<body class="bg-[var(--bg-color)] text-[var(--text-color)] transition-all duration-300 ease-in-out m-0 p-0">
+		<div class="min-h-screen flex flex-col">
+			<Nav />
+			<slot />
+		</div>
+
+		<script>
+			addEventListener('load', () => {
+				document.documentElement.classList.add('loaded');
+			});
+
+			// Scroll animations
+			document.addEventListener('DOMContentLoaded', () => {
+				const observerOptions = {
+					root: null,
+					rootMargin: '0px 0px -50px 0px',
+					threshold: 0.1
+				};
+
+				const observer = new IntersectionObserver((entries) => {
+					entries.forEach(entry => {
+						if (entry.isIntersecting) {
+							entry.target.classList.add('animate-in');
+						}
+					});
+				}, observerOptions);
+
+				// Observe all elements with scroll-animate class
+				document.querySelectorAll('.scroll-animate').forEach(el => {
+					observer.observe(el);
+				});
+			});
+
+			// Update hero logo based on theme
+			function updateHeroLogo() {
+				const heroLogo = document.getElementById('hero-logo');
+				if (heroLogo && heroLogo instanceof HTMLImageElement) {
+					const isDark = document.documentElement.classList.contains('theme-dark');
+					heroLogo.src = isDark ? '/dark_icon_adroc.svg' : '/light_icon_adroc.svg';
+				}
+			}
+
+			// Listen for theme changes
+			window.addEventListener('themeChanged', updateHeroLogo);
+
+			// Update on initial load
+			document.addEventListener('DOMContentLoaded', updateHeroLogo);
+
+			// Smooth section scrolling
+			document.addEventListener('DOMContentLoaded', () => {
+				const sections = ['hero', 'projects', 'skills', 'contact'];
+				let currentSectionIndex = 0;
+				let isScrolling = false;
+
+				// Handle wheel events for section navigation
+				function handleWheel(event) {
+					if (isScrolling) return;
+
+					event.preventDefault();
+					
+					if (event.deltaY > 0) {
+						// Scroll down
+						if (currentSectionIndex < sections.length - 1) {
+							currentSectionIndex++;
+							scrollToSection(sections[currentSectionIndex]);
+						}
+					} else {
+						// Scroll up
+						if (currentSectionIndex > 0) {
+							currentSectionIndex--;
+							scrollToSection(sections[currentSectionIndex]);
+						}
+					}
+				}
+
+				function scrollToSection(sectionId) {
+					isScrolling = true;
+					const element = document.getElementById(sectionId);
+					if (element) {
+						element.scrollIntoView({
+							behavior: 'smooth',
+							block: 'start'
+						});
+						
+						// Reset scrolling flag after animation
+						setTimeout(() => {
+							isScrolling = false;
+						}, 1000);
+					}
+				}
+
+				// Update current section based on scroll position
+				function updateCurrentSection() {
+					const scrollPosition = window.scrollY + window.innerHeight / 2;
+					
+					sections.forEach((sectionId, index) => {
+						const element = document.getElementById(sectionId);
+						if (element) {
+							const rect = element.getBoundingClientRect();
+							const elementTop = rect.top + window.scrollY;
+							const elementBottom = elementTop + rect.height;
+							
+							if (scrollPosition >= elementTop && scrollPosition < elementBottom) {
+								currentSectionIndex = index;
+							}
+						}
+					});
+				}
+
+				// Only enable smooth scrolling on desktop
+				if (window.innerWidth >= 1024) {
+					window.addEventListener('wheel', handleWheel, { passive: false });
+				}
+
+				// Update current section on scroll
+				window.addEventListener('scroll', updateCurrentSection);
+				
+				// Initialize current section
+				updateCurrentSection();
+
+				// Handle navigation clicks
+				document.querySelectorAll('a[href^="#"]').forEach(link => {
+					link.addEventListener('click', (e) => {
+						e.preventDefault();
+						const targetId = link.getAttribute('href').substring(1);
+						const targetIndex = sections.indexOf(targetId);
+						if (targetIndex !== -1) {
+							currentSectionIndex = targetIndex;
+							scrollToSection(targetId);
+						}
+					});
+				});
+			});
+		</script>
 	</body>
 </html>
 
-<style>
-	html,
-	body {
-		margin: 0;
-		width: 100%;
-		height: 100%;
-	}
-</style>
+

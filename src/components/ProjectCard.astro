@@ -1,0 +1,96 @@
+---
+export interface Props {
+	title: string;
+	description: string;
+	icon: string;
+	imageIcon: string;
+	category: string;
+	technologies: string[];
+	links: {
+		primary: { text: string; href: string };
+		secondary?: { text: string; href: string };
+	};
+	status?: string;
+	staggerClass?: string;
+}
+
+const { 
+	title, 
+	description, 
+	icon, 
+	imageIcon, 
+	category, 
+	technologies, 
+	links, 
+	status = 'active',
+	staggerClass = 'stagger-2'
+} = Astro.props;
+
+const isComingSoon = status === 'coming-soon';
+---
+
+<div class={`scroll-animate ${staggerClass} group relative w-full`}>
+	<div class={`relative p-3 lg:p-4 bg-gradient-to-br from-[var(--bg-color)] to-[var(--overlay-color)] rounded-xl border border-[var(--border-color)] transition-all duration-500 ease-in-out hover:transform hover:scale-[1.02] hover:shadow-[0_20px_40px_var(--shadow-color)] neon-card overflow-hidden ${isComingSoon ? 'opacity-75' : ''}`}>
+		<!-- Neon border animation -->
+		<div class="absolute inset-0 rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-500 ease-in-out">
+			<div class="absolute inset-0 rounded-2xl border-2 border-[var(--accent-color)] animate-pulse shadow-[0_0_20px_var(--accent-color)]"></div>
+		</div>
+		
+		<div class="relative z-10 grid grid-cols-1 lg:grid-cols-3 gap-3 lg:gap-4 items-center">
+			<!-- Content Section -->
+			<div class="lg:col-span-2 space-y-2">
+				<div class="flex items-center justify-between">
+					<div class="text-2xl">{icon}</div>
+					<div class={`px-3 py-1 rounded-full text-xs font-medium font-brand ${isComingSoon ? 'bg-[var(--border-color)] text-[var(--text-color)]' : 'bg-[var(--accent-color)] text-[var(--accent-text)]'}`}>
+						{category}
+					</div>
+				</div>
+				
+				<h3 class={`text-lg lg:text-xl font-bold font-brand transition-colors duration-300 ${isComingSoon ? 'text-[var(--text-color)]' : 'text-[var(--text-color)] group-hover:text-[var(--accent-color)]'}`}>
+					{title}
+				</h3>
+				
+				<p class={`text-xs lg:text-sm leading-relaxed ${isComingSoon ? 'text-[var(--text-color)] opacity-60' : 'text-[var(--text-color)] opacity-80'}`}>
+					{description}
+				</p>
+				
+				<div class="flex flex-wrap gap-1">
+					{technologies.map((tech) => (
+						<span class={`px-2 py-1 bg-[var(--overlay-color)] text-[var(--text-color)] rounded-md text-xs border border-[var(--border-color)] ${isComingSoon ? 'opacity-50' : ''}`}>
+							{tech}
+						</span>
+					))}
+				</div>
+				
+				<div class="flex gap-2 pt-2">
+					{!isComingSoon ? (
+						<>
+							<a href={links.primary.href} class="px-3 py-1.5 bg-[var(--accent-color)] text-[var(--accent-text)] rounded-md font-medium text-xs transition-all duration-300 hover:bg-[var(--accent-hover)] hover:scale-105 text-center">
+								{links.primary.text}
+							</a>
+							{links.secondary && (
+								<a href={links.secondary.href} class="px-3 py-1.5 border border-[var(--border-color)] text-[var(--text-color)] rounded-md font-medium text-xs transition-all duration-300 hover:bg-[var(--overlay-color)] hover:scale-105">
+									{links.secondary.text}
+								</a>
+							)}
+						</>
+					) : (
+						<div class="px-3 py-1.5 bg-[var(--border-color)] text-[var(--text-color)] rounded-md font-medium text-xs text-center opacity-50 cursor-not-allowed">
+							{links.primary.text}
+						</div>
+					)}
+				</div>
+			</div>
+			
+			<!-- Image Section -->
+			<div class="lg:col-span-1 flex justify-center lg:justify-end">
+				<div class={`w-20 h-20 lg:w-24 lg:h-24 rounded-lg flex items-center justify-center relative overflow-hidden transition-transform duration-500 ${isComingSoon ? 'bg-gradient-to-br from-[var(--border-color)] to-[var(--overlay-color)] opacity-50' : 'bg-gradient-to-br from-[var(--accent-color)] to-[var(--accent-hover)] group-hover:scale-105'}`}>
+					<div class={`absolute inset-0 bg-gradient-to-br from-transparent ${isComingSoon ? 'to-black/10' : 'to-black/20'}`}></div>
+					<div class={`relative text-2xl lg:text-3xl transition-opacity duration-300 ${isComingSoon ? 'opacity-60' : 'opacity-80 group-hover:opacity-100'}`}>
+						{imageIcon}
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>

@@ -1,0 +1,71 @@
+---
+export interface ContactItem {
+	icon: string;
+	title: string;
+	description: string;
+	href?: string;
+}
+
+const contactItems: ContactItem[] = [
+	{
+		icon: '📧',
+		title: 'Email',
+		description: 'orantesadrian01@gmail.com',
+		href: 'mailto:orantesadrian01@gmail.com'
+	},
+	{
+		icon: '💼',
+		title: 'LinkedIn',
+		description: "Let's connect professionally",
+		href: 'https://www.linkedin.com/in/adrian-orantes-ab053027b/'
+	},
+	{
+		icon: '🚀',
+		title: 'GitHub',
+		description: 'Check out my code',
+		href: 'https://github.com/Adr-oc'
+	}
+];
+---
+
+<div class="space-y-8">
+	<div class="scroll-animate stagger-2">
+		<h3 class="text-xl lg:text-2xl font-bold text-[var(--text-color)] font-brand mb-6">
+			Get in <span class="text-[var(--accent-color)]">Touch</span>
+		</h3>
+		<div class="space-y-4">
+			{contactItems.map((item) => (
+				item.href ? (
+					<a
+						href={item.href}
+						target="_blank"
+						rel="noopener noreferrer"
+						class="flex items-center gap-4 p-4 bg-[var(--bg-color)] rounded-lg border border-[var(--border-color)] transition-all duration-300 group focus:outline-none focus:ring-2 focus:ring-[var(--accent-color)] hover:border-[var(--accent-color)] relative overflow-hidden hover:drop-shadow-[0_2px_3px_var(--accent-color)]"
+						role="button"
+						tabindex="0"
+					>
+						<div class="w-12 h-12 bg-[var(--overlay-color)] text-[var(--accent-text)] rounded-lg flex items-center justify-center text-xl group-hover:text-[var(--accent-color)] group-hover:drop-shadow-[0_0_8px_var(--accent-color)]">
+							{item.icon}
+						</div>
+						<div class="flex-1">
+							<p class="font-medium text-[var(--text-color)] group-hover:text-[var(--accent-color)] group-hover:drop-shadow-[0_0_8px_var(--accent-color)]">{item.title}</p>
+							<p class="text-[var(--text-color)] opacity-80 text-sm group-hover:text-[var(--accent-color)] group-hover:opacity-100 transition-colors duration-300 group-hover:underline group-hover:underline-offset-2 group-hover:drop-shadow-[0_0_8px_var(--accent-color)]">
+								{item.description}
+							</p>
+						</div>
+					</a>
+				) : (
+					<div class="flex items-center gap-4 p-4 bg-[var(--bg-color)] rounded-lg border border-[var(--border-color)] transition-all duration-300 group">
+						<div class="w-12 h-12 bg-[var(--overlay-color)] text-[var(--accent-text)] rounded-lg flex items-center justify-center text-xl">
+							{item.icon}
+						</div>
+						<div class="flex-1">
+							<p class="font-medium text-[var(--text-color)]">{item.title}</p>
+							<p class="text-[var(--text-color)] opacity-80 text-sm">{item.description}</p>
+						</div>
+					</div>
+				)
+			))}
+		</div>
+	</div>
+</div>

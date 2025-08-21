@@ -1,0 +1,41 @@
+---
+export interface Props {
+	id: string;
+	title?: string;
+	subtitle?: string;
+	background?: 'primary' | 'secondary';
+	class?: string;
+}
+
+const { 
+	id, 
+	title, 
+	subtitle, 
+	background = 'primary',
+	class: className = ''
+} = Astro.props;
+
+const bgClass = background === 'secondary' 
+	? 'bg-[var(--overlay-color)]' 
+	: 'bg-[var(--bg-color)]';
+---
+
+<section 
+	id={id} 
+	class={`min-h-screen flex items-center justify-center px-4 py-12 sm:px-6 lg:px-8 xl:px-12 ${bgClass} transition-colors duration-300 ease-in-out ${className}`}
+>
+	<div class="w-full max-w-6xl mx-auto">
+		{(title || subtitle) && (
+			<div class="text-center mb-12 lg:mb-16">
+				{title && (
+					<h2 class="scroll-animate text-3xl sm:text-4xl lg:text-5xl font-bold text-[var(--text-color)] transition-colors duration-300 ease-in-out mb-4" set:html={title} />
+				)}
+				{subtitle && (
+					<p class="scroll-animate stagger-1 text-base sm:text-lg lg:text-xl text-[var(--text-color)] opacity-80 transition-colors duration-300 ease-in-out max-w-2xl mx-auto" set:html={subtitle} />
+				)}
+			</div>
+		)}
+		
+		<slot />
+	</div>
+</section>

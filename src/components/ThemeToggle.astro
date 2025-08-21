@@ -1,0 +1,66 @@
+---
+import Icon from './Icon.astro';
+---
+
+<theme-toggle class="hover:drop-shadow-[0_0_5px_var(--accent-color)]">
+	<button class="flex items-center border border-[var(--border-color)] rounded-full p-0.5 bg-[var(--overlay-color)] shadow-sm cursor-pointer transition-all duration-300 ease-in-out hover:bg-[var(--border-color)] hover:shadow-md focus:outline-none focus:ring-2 focus:ring-[var(--accent-color)] focus:ring-offset-2 focus:ring-offset-[var(--bg-color)]">
+		<span class="sr-only">Toggle theme</span>
+		<span class="icon light z-10 relative flex items-center justify-center p-1.5 w-8 h-8 md:w-9 md:h-9 text-sm text-[var(--text-color)] transition-colors duration-300 ease-in-out before:content-[''] before:z-[-1] before:absolute before:inset-0 before:bg-[var(--accent-color)] before:rounded-full before:transition-transform before:duration-300 before:ease-in-out"><Icon icon="sun" /></span>
+		<span class="icon dark z-10 relative flex items-center justify-center p-1.5 w-8 h-8 md:w-9 md:h-9 text-sm text-[var(--text-color)] transition-colors duration-300 ease-in-out"><Icon icon="moon-stars" /></span>
+	</button>
+</theme-toggle>
+
+<style>
+	/* Estilos específicos para el funcionamiento del toggle que no se pueden replicar con Tailwind */
+	:global(.theme-dark) .icon.light::before {
+		transform: translateX(100%);
+	}
+
+	:global(.theme-dark) .icon.dark,
+	:global(html:not(.theme-dark)) .icon.light,
+	button[aria-pressed='false'] .icon.light {
+		color: var(--accent-text);
+	}
+
+	@media (forced-colors: active) {
+		.icon.light::before {
+			background-color: SelectedItem;
+		}
+	}
+</style>
+
+<script>
+	class ThemeToggle extends HTMLElement {
+		constructor() {
+			super();
+
+			const button = this.querySelector('button')!;
+
+					/** Set the theme to dark/light mode. */
+		const setTheme = (dark: boolean) => {
+			document.documentElement.classList[dark ? 'add' : 'remove']('theme-dark');
+			button.setAttribute('aria-pressed', String(dark));
+			// Persist theme choice in localStorage
+			localStorage.setItem('theme', dark ? 'dark' : 'light');
+			// Update favicon based on theme
+			const favicon = document.querySelector('link[rel="icon"]') as HTMLLinkElement;
+			if (favicon) {
+				favicon.href = dark ? '/dark_icon_adroc.svg' : '/light_icon_adroc.svg';
+			}
+			// Dispatch custom event for theme change
+			window.dispatchEvent(new CustomEvent('themeChanged', { detail: { isDark: dark } }));
+		};
+
+			// Toggle the theme when a user clicks the button.
+			button.addEventListener('click', () => setTheme(!this.isDark()));
+
+			// Initialize button state to reflect current theme.
+			setTheme(this.isDark());
+		}
+
+		isDark() {
+			return document.documentElement.classList.contains('theme-dark');
+		}
+	}
+	customElements.define('theme-toggle', ThemeToggle);
+</script>

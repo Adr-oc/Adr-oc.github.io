@@ -1,0 +1,200 @@
+@import 'tailwindcss';
+
+/* Import Cascadia Code font locally */
+@import '@fontsource/cascadia-code/400.css';
+@import '@fontsource/cascadia-code/600.css';
+@import '@fontsource/cascadia-code/700.css';
+
+/* Base theme variables using the color palette */
+:root {
+  /* Light theme (default) */
+  --bg-color: #ffffff;
+  --text-color: #24292d;
+  --accent-color: #2fbf50;
+  --accent-color-rgb: 47, 191, 80;
+  --accent-hover: #259e42;
+  --accent-text: #ffffff;
+  --border-color: rgba(36, 41, 45, 0.2);
+  --shadow-color: rgba(36, 41, 45, 0.1);
+  --overlay-color: rgba(36, 41, 45, 0.05);
+  --theme-transition: 0.3s ease-in-out;
+}
+
+/* Dark theme */
+.theme-dark {
+  --bg-color: #24292d;
+  --text-color: #ffffff;
+  --accent-color: #5bd779;
+  --accent-color-rgb: 91, 215, 121;
+  --accent-hover: #4bc266;
+  --accent-text: #24292d;
+  --border-color: rgba(255, 255, 255, 0.2);
+  --shadow-color: rgba(0, 0, 0, 0.3);
+  --overlay-color: rgba(255, 255, 255, 0.05);
+}
+
+/* Base reset for consistent cross-browser behavior */
+* {
+  box-sizing: border-box;
+}
+
+html {
+  -webkit-text-size-adjust: 100%;
+  font-feature-settings: normal;
+  font-variation-settings: normal;
+  tab-size: 4;
+}
+
+html,
+body {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+}
+
+/* Smooth scrolling */
+@media (prefers-reduced-motion: no-preference) {
+  html {
+    scroll-behavior: smooth;
+  }
+}
+
+/* Cascadia Code font for brand/accent elements */
+.font-brand {
+  font-family: 'Cascadia Code', ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, 'Liberation Mono', 'Courier New', monospace !important;
+  font-feature-settings: 'liga' 1, 'calt' 1;
+  font-variant-ligatures: common-ligatures;
+}
+
+/* Additional styling for accent text */
+.accent-glow {
+  text-shadow: 0 0 10px var(--accent-color);
+}
+
+/* Code-like styling for special elements */
+.code-accent {
+  font-family: 'Cascadia Code', monospace;
+  background: var(--overlay-color);
+  padding: 0.125rem 0.375rem;
+  border-radius: 0.25rem;
+  border: 1px solid var(--border-color);
+}
+
+/* Scroll animations */
+.scroll-animate {
+  opacity: 0;
+  transform: translateY(30px);
+  transition: all 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.scroll-animate.animate-in {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* Stagger animations for multiple elements */
+.scroll-animate.stagger-1 { transition-delay: 0.1s; }
+.scroll-animate.stagger-2 { transition-delay: 0.2s; }
+.scroll-animate.stagger-3 { transition-delay: 0.3s; }
+.scroll-animate.stagger-4 { transition-delay: 0.4s; }
+.scroll-animate.stagger-5 { transition-delay: 0.5s; }
+
+/* Different animation types */
+.scroll-animate.slide-left {
+  transform: translateX(-50px);
+}
+
+.scroll-animate.slide-right {
+  transform: translateX(50px);
+}
+
+.scroll-animate.scale-up {
+  transform: scale(0.8) translateY(30px);
+}
+
+.scroll-animate.fade-in {
+  transform: none;
+}
+
+/* Animation when elements come into view */
+.scroll-animate.animate-in.slide-left,
+.scroll-animate.animate-in.slide-right {
+  transform: translateX(0);
+}
+
+.scroll-animate.animate-in.scale-up {
+  transform: scale(1) translateY(0);
+}
+
+/* Respect reduced motion preferences */
+@media (prefers-reduced-motion: reduce) {
+  .scroll-animate {
+    transition: none;
+    opacity: 1;
+    transform: none;
+  }
+}
+
+/* Hero section specific animations */
+@keyframes float {
+  0%, 100% { transform: translateY(0px); }
+  50% { transform: translateY(-10px); }
+}
+
+.hero-visual {
+  animation: float 3s ease-in-out infinite;
+}
+
+/* Mobile-first improvements */
+@media (max-width: 640px) {
+  .hero-visual {
+    animation: float 4s ease-in-out infinite;
+  }
+  
+  /* Improve touch targets on mobile */
+  .cta-button {
+    min-height: 44px;
+    padding: 12px 24px;
+  }
+}
+
+/* Smooth scrolling for anchor links */
+html {
+  scroll-behavior: smooth;
+}
+
+/* Neon card effects for projects */
+.neon-card {
+  position: relative;
+  background: linear-gradient(135deg, var(--bg-color), var(--overlay-color));
+}
+
+.neon-card::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  padding: 2px;
+  background: linear-gradient(45deg, transparent, var(--accent-color), transparent);
+  border-radius: inherit;
+  opacity: 0;
+  transition: opacity 0.5s ease-in-out;
+  mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  mask-composite: exclude;
+  -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  -webkit-mask-composite: destination-out;
+}
+
+.neon-card:hover::before {
+  opacity: 0.7;
+}
+
+/* Section snap scrolling on desktop */
+@media (min-width: 1024px) {
+  .scroll-snap-container {
+    scroll-snap-type: y mandatory;
+  }
+  
+  .scroll-snap-section {
+    scroll-snap-align: start;
+  }
+}
